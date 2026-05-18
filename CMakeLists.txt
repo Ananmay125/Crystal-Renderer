@@ -30,6 +30,9 @@ add_executable (CrystalRenderer
 	"src/Main.cpp" 
 	"src/Renderer.h"
     "src/Renderer.cpp"
+
+    "src/graphics/vkSwapchain.cpp"
+    "src/graphics/vkSwapchain.cpp"
 )
 
 add_library(imgui STATIC
@@ -41,6 +44,12 @@ add_library(imgui STATIC
     libs/imgui/backends/imgui_impl_glfw.cpp
     libs/imgui/backends/imgui_impl_vulkan.cpp
 )
+target_include_directories(imgui PUBLIC 
+    "libs/imgui" 
+    "libs/imgui/backends"
+)
+target_compile_definitions(imgui PUBLIC IMGUI_DEFINE_MATH_OPERATORS)
+target_link_libraries(imgui PRIVATE glfw Vulkan::Vulkan)
 
 target_include_directories(CrystalRenderer PRIVATE 
     libs/glfw/include
@@ -65,8 +74,8 @@ add_custom_command(TARGET CrystalRenderer POST_BUILD
 
 add_custom_command(TARGET CrystalRenderer POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_CURRENT_SOURCE_DIR}/resources"
-    "$<TARGET_FILE_DIR:CrystalRenderer>/resources"
+    "${CMAKE_CURRENT_SOURCE_DIR}/res"
+    "$<TARGET_FILE_DIR:CrystalRenderer>/res"
 )
 
 install(TARGETS CrystalRenderer DESTINATION .)

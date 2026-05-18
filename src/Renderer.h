@@ -10,6 +10,8 @@ public:
 	void run();
 	void clean();
 
+	GLFWwindow* getWindow();
+	bool shouldClose();
 
 private:
 

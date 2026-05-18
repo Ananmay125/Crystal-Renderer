@@ -5,10 +5,13 @@ int main() {
 
 	Renderer crystalRenderer;
 
+	GLFWwindow* rawWindow = crystalRenderer.getWindow();
+
 	crystalRenderer.init();
 
-	while (true) {
-	
+	while(!crystalRenderer.shouldClose()) {
+		
+		glfwPollEvents();
 		crystalRenderer.run();
 	
 	}

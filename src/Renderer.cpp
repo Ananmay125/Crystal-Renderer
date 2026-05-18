@@ -15,6 +15,9 @@ void Renderer::init() {
 }
 
 void Renderer::run() {
+	
+	// Draw functions here i think
+
 
 }
 
@@ -22,4 +25,13 @@ void Renderer::clean() {
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
+}
+
+// Helper functions (helpful really)
+GLFWwindow* Renderer::getWindow() {
+	return window;
+}
+
+bool Renderer::shouldClose() {
+	return glfwWindowShouldClose(window);
 }
