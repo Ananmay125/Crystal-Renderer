@@ -3,6 +3,16 @@
 
 int main() {
 
-	std::cout << "Hello CMake." << std::endl;
+	Renderer crystalRenderer;
+
+	crystalRenderer.init();
+
+	while (true) {
+	
+		crystalRenderer.run();
+	
+	}
+
+	crystalRenderer.clean();
 	return 0;
 }
