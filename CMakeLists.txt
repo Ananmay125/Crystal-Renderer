@@ -3,21 +3,12 @@ cmake_minimum_required (VERSION 3.8)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-include(FetchContent)
 
-if (POLICY CMP0141)
-  cmake_policy(SET CMP0141 NEW)
-  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
-endif()
-
-project ("CrystalRenderer" CXX C)
+project ("CrystalRenderer" CXX)
 
 find_package(Vulkan)
+include(FetchContent)
 add_subdirectory("libs/glfw")
-
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
     vk_bootstrap
@@ -31,8 +22,12 @@ add_executable (CrystalRenderer
 	"src/Renderer.h"
     "src/Renderer.cpp"
 
+    "src/graphics/vkSwapchain.h"
     "src/graphics/vkSwapchain.cpp"
-    "src/graphics/vkSwapchain.cpp"
+    "src/graphics/vkDevice.h"
+    "src/graphics/vkDevice.cpp"
+    "src/graphics/vkCommands.h"
+    "src/graphics/vkCommands.cpp"
 )
 
 add_library(imgui STATIC
@@ -49,10 +44,8 @@ target_include_directories(imgui PUBLIC
     "libs/imgui/backends"
 )
 target_compile_definitions(imgui PUBLIC IMGUI_DEFINE_MATH_OPERATORS)
-target_link_libraries(imgui PRIVATE glfw Vulkan::Vulkan)
 
 target_include_directories(CrystalRenderer PRIVATE 
-    libs/glfw/include
     libs/glad/include 
     libs/glm     
     libs      
@@ -61,8 +54,9 @@ target_include_directories(CrystalRenderer PRIVATE
 )
 
 target_link_libraries(CrystalRenderer PRIVATE
-    glfw           
+    glfw
     Vulkan::Vulkan 
+    vk-bootstrap
     imgui          
 )
 
