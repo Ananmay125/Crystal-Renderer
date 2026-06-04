@@ -1,5 +1,7 @@
 ﻿# Crystal-Renderer
 A renderer in **vulkan** in C++. Pretty cool.
+Hope to use this in some simulation.
+<hr>
 
 Features ->
 - Lighting
@@ -10,18 +12,22 @@ Features ->
 
 > Still in development. Code may not be that good 😅
 
-### when cloning and compiling
+<hr>
+
+### ❗ when cloning and compiling
 This repository has `.gitmodules`, so its better if you clone with this:<br>
 `git clone https://github.com/Ananmay125/Crystal-Renderer.git`
 
-### This pre-installs:
-- vk-bootstrap
-- glfw
-- glm
-- imgui
-- stb
-- assimp
+> Also remember to compile the shaders (.vert/.frag) to spv using the `glslc` shader compiler.
 
-**Except for vulkanSDK**
+#### This pre-installs (except for vulkanSDK):
+- [vk-bootstrap](https://github.com/charles-lunarg/vk-bootstrap)
+- [glfw](https://github.com/glfw/glfw)
+- [glm](https://github.com/g-truc/glm)
+- [imgui](https://github.com/ocornut/imgui)
+- [stb](https://github.com/nothings/stb)
+- [assimp](https://github.com/assimp/assimp)
+<hr>
 
-**Completely opensource under MIT license**
+## License
+**This repository and the code is completely opensource under [MIT license](License)**
