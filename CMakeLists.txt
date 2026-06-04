@@ -14,6 +14,7 @@ find_package(Vulkan)
 add_subdirectory(libs/glfw)
 add_subdirectory(libs/glm)
 add_subdirectory(libs/vk-bootstrap)
+add_subdirectory(libs/VulkanMemoryAllocator)
 
 add_executable (CrystalRenderer
 	"src/Main.cpp" 
@@ -42,7 +43,8 @@ target_include_directories(CrystalRenderer PRIVATE
 target_link_libraries(CrystalRenderer PRIVATE
     glfw
     Vulkan::Vulkan
-    vk-bootstrap        
+    vk-bootstrap
+    GPUOpen::VulkanMemoryAllocator
 )
 
 add_custom_command(TARGET CrystalRenderer POST_BUILD
