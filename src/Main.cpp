@@ -11,9 +11,8 @@ int main() {
 
 	while(!crystalRenderer.shouldClose()) {
 		
-		glfwPollEvents();
 		crystalRenderer.run();
-	
+		glfwPollEvents();
 	}
 
 	crystalRenderer.clean();

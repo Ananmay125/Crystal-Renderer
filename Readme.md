@@ -6,17 +6,22 @@ Features ->
 - Model loading
 - Complete scene loading
 - PBR
-- Audio support
 - Shader support
 
 > Still in development. Code may not be that good 😅
 
-### When compiling 
+### when cloning and compiling
+This repository has `.gitmodules`, so its better if you clone with this:<br>
+`git clone https://github.com/Ananmay125/Crystal-Renderer.git`
 
-Libraries needed ->
-- SDL3
-- ImGui
-- Stb
+### This pre-installs:
+- vk-bootstrap
+- glfw
 - glm
+- imgui
+- stb
+- assimp
 
-Put them in a folder named "libs" and compile the project.
+**Except for vulkanSDK**
+
+**Completely opensource under MIT license**

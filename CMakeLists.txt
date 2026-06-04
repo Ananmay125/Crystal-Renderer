@@ -6,70 +6,55 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project ("CrystalRenderer" CXX)
 
-find_package(Vulkan)
-include(FetchContent)
-add_subdirectory("libs/glfw")
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
-FetchContent_Declare(
-    vk_bootstrap
-    GIT_REPOSITORY https://github.com/charles-lunarg/vk-bootstrap
-    GIT_TAG        main
-)
-FetchContent_MakeAvailable(vk_bootstrap)
+find_package(Vulkan)
+add_subdirectory(libs/glfw)
+add_subdirectory(libs/glm)
+add_subdirectory(libs/vk-bootstrap)
 
 add_executable (CrystalRenderer
 	"src/Main.cpp" 
 	"src/Renderer.h"
     "src/Renderer.cpp"
-
-    "src/graphics/vkSwapchain.h"
-    "src/graphics/vkSwapchain.cpp"
-    "src/graphics/vkDevice.h"
-    "src/graphics/vkDevice.cpp"
-    "src/graphics/vkCommands.h"
-    "src/graphics/vkCommands.cpp"
 )
 
-add_library(imgui STATIC
-    libs/imgui/imgui.cpp
-    libs/imgui/imgui_draw.cpp
-    libs/imgui/imgui_tables.cpp
-    libs/imgui/imgui_widgets.cpp
-    libs/imgui/imgui_demo.cpp
-    libs/imgui/backends/imgui_impl_glfw.cpp
-    libs/imgui/backends/imgui_impl_vulkan.cpp
+set(IMGUI_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui/imgui.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui/imgui_draw.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui/imgui_tables.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui/imgui_widgets.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui/backends/imgui_impl_glfw.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui/backends/imgui_impl_vulkan.cpp"
 )
-target_include_directories(imgui PUBLIC 
-    "libs/imgui" 
-    "libs/imgui/backends"
-)
-target_compile_definitions(imgui PUBLIC IMGUI_DEFINE_MATH_OPERATORS)
+target_sources(CrystalRenderer PRIVATE ${IMGUI_SOURCES})
 
 target_include_directories(CrystalRenderer PRIVATE 
-    libs/glad/include 
-    libs/glm     
-    libs      
+    src
+    libs/glm
+    libs/stb
     libs/imgui
     libs/imgui/backends
 )
 
 target_link_libraries(CrystalRenderer PRIVATE
     glfw
-    Vulkan::Vulkan 
-    vk-bootstrap
-    imgui          
+    Vulkan::Vulkan
+    vk-bootstrap        
 )
 
 add_custom_command(TARGET CrystalRenderer POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_CURRENT_SOURCE_DIR}/shaders"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/shaders"
     "$<TARGET_FILE_DIR:CrystalRenderer>/shaders"
 )
 
 add_custom_command(TARGET CrystalRenderer POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_CURRENT_SOURCE_DIR}/res"
-    "$<TARGET_FILE_DIR:CrystalRenderer>/res"
+    "${CMAKE_CURRENT_SOURCE_DIR}/resources"
+    "$<TARGET_FILE_DIR:CrystalRenderer>/resources"
 )
 
 install(TARGETS CrystalRenderer DESTINATION .)
